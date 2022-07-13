@@ -6,11 +6,13 @@ export default async function handler(req, res) {
     res.json(rows);
   }
   if (req.method === 'POST') {
-    await promisePool.query(`
+    await promisePool.query(
+      `
       INSERT INTO Blog (title, content, readTime, writer) 
-      VALUES ("${req.body.title}", "${req.body.content}", 
-      ${req.body.readTime}, "${req.body.writer}")
-    `);
+      VALUES (?, ?, ?, ?)
+    `,
+      [req.body.title, req.body.content, req.body.readTime, req.body.writer]
+    );
     res.send('성공!');
   }
 }
